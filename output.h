@@ -9,10 +9,9 @@ namespace kammyu
 {
   namespace output
   {
-    template <typename T>
-    std::ostream& operator<<(std::ostream& os, const std::vector<std::vector<T>>& v)
+    std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& v)
     {
-      for (const std::vector<T>& x : v)
+      for (const std::string& x : v)
         os << x << "\n";
       return os;
     }
@@ -20,7 +19,14 @@ namespace kammyu
     std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
     {
       for (const T& x : v)
-        os << x << " ";
+        os << x << ' ';
+      return os;
+    }
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const std::vector<std::vector<T>>& v)
+    {
+      for (const std::vector<T>& x : v)
+        os << x << '\n';
       return os;
     }
 
