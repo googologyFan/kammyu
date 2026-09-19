@@ -1,3 +1,8 @@
+/******************************************
+ * ↓↓↓↓↓↓↓↓↓↓↓↓↓ my library ↓↓↓↓↓↓↓↓↓↓↓↓↓ *
+ * https://github.com/googologyFan/kammyu *
+ ******************************************/
+
 #include <bits/stdc++.h>
 
 #ifndef KAMMYU_CONSTANTS
@@ -84,49 +89,39 @@ namespace kammyu
 }; // namespace kammyu
 
 #endif // KAMMYU_INPUT
+
 #ifndef KAMMYU_OUTPUT
 #define KAMMYU_OUTPUT
 
 #include <iostream>
+#include <ostream>
 #include <vector>
 
 namespace kammyu
 {
   namespace output
   {
-    namespace debug
+    std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& v)
     {
-      template <typename T>
-      void v(const std::vector<T> &v)
-      {
-        for (const T &elem : v)
-          std::cerr << elem << " ";
-      }
-      template <typename T>
-      void vv(const std::vector<std::vector<T>> &v)
-      {
-        for (const std::vector<T> &vec : v)
-          for (int i = 0; i < vec.size(); i++)
-            std::cerr << vec[i] << " \n"[i == vec.size() - 1];
-      }
+      for (const std::string& x : v)
+        os << x << "\n";
+      return os;
     }
-    namespace output
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
     {
-      template <typename T>
-      void v(const std::vector<T> &v, std::string sep = " ", std::string end = "\n")
-      {
-        for (const T &elem : v)
-          std::cout << elem << sep;
-        std::cout << end;
-      }
-      template <typename T>
-      void vv(const std::vector<std::vector<T>> &v)
-      {
-        for (const std::vector<T> &vec : v)
-          for (int i = 0; i < vec.size(); i++)
-            std::cout << vec[i] << " \n"[i == vec.size() - 1];
-      }
-    };
+      for (const T& x : v)
+        os << x << ' ';
+      return os;
+    }
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const std::vector<std::vector<T>>& v)
+    {
+      for (const std::vector<T>& x : v)
+        os << x << '\n';
+      return os;
+    }
+
     void yes(bool o = false)
     {
       if (o)
@@ -148,16 +143,17 @@ namespace kammyu
       else
         no(o);
     }
-  };
-};
+  }; // namespace output
+}; // namespace kammyu
 
 #endif // KAMMYU_OUTPUT
+
 #ifndef KAMMYU_POINT
 #define KAMMYU_POINT
 
 #include <iostream>
-#include <vector>
 #include <tuple>
+#include <vector>
 
 namespace kammyu
 {
@@ -165,24 +161,33 @@ namespace kammyu
   {
     struct P
     {
+    private:
+      using ll = long long;
+
+    public:
       P() { P(0, 0); }
-      P(int _i, int _j) : i(_i), j(_j) {}
-      int i, j;
-      bool operator==(const P &p) const { return i == p.i && j == p.j; }
-      bool operator!=(const P &p) const { return !(*this == p); }
-      bool operator<(const P &other) const { return std::tie(i, j) < std::tie(other.i, other.j); }
-      P operator+(const P &other) const { return P(i + other.i, j + other.j); }
-      P operator-(const P &other) const { return P(i - other.i, j - other.j); }
-      P operator*(const int &other) const { return P(i * other, j * other); }
-      P operator*(const double &other) const { return P(i * other, j * other); }
-      P operator/(const double &scaler) const { return P(i / scaler, j / scaler); }
-      P operator+=(const P &p) { return *this = *this + p; }
-      P operator-=(const P &p) { return *this = *this - p; }
-      friend std::ostream &operator<<(std::ostream &os, const P &p) { return os << p.i << " " << p.j; }
-      friend std::istream &operator>>(std::istream &is, P &p) { return is >> p.i >> p.j; }
-      bool out_of_bounds(int size) const { return i < 0 || j < 0 || i >= size || j >= size; }
-      bool out_of_bounds(int H, int W) const { return i < 0 || j < 0 || i >= H || j >= W; }
-      P &operator--()
+      P(ll _i, ll _j) : i(_i), j(_j) {}
+      ll i, j;
+      bool operator==(const P& p) const { return i == p.i && j == p.j; }
+      bool operator!=(const P& p) const { return !(*this == p); }
+      bool operator<(const P& other) const { return std::tie(i, j) < std::tie(other.i, other.j); }
+      bool operator>(const P& other) const { return std::tie(i, j) > std::tie(other.i, other.j); }
+      P operator+(const P& other) const { return P(i + other.i, j + other.j); }
+      P operator-(const P& other) const { return P(i - other.i, j - other.j); }
+      P operator*(const int& other) const { return P(i * other, j * other); }
+      P operator*(const ll& other) const { return P(i * other, j * other); }
+      P operator*(const P& other) const { return P(i * other.i, j * other.j); }
+      P operator*(const double& other) const { return P(i * other, j * other); }
+      P operator/(const ll& scaler) const { return P(i / scaler, j / scaler); }
+      P operator/(const double& scaler) const { return P(i / scaler, j / scaler); }
+      P operator+=(const P& p) { return *this = *this + p; }
+      P operator-=(const P& p) { return *this = *this - p; }
+      P operator*=(const ll& p) { return *this = *this * p; }
+      friend std::ostream& operator<<(std::ostream& os, const P& p) { return os << p.i << " " << p.j; }
+      friend std::istream& operator>>(std::istream& is, P& p) { return is >> p.i >> p.j; }
+      bool out_of_bounds(ll size) const { return i < 0 || j < 0 || i >= size || j >= size; }
+      bool out_of_bounds(ll H, ll W) const { return i < 0 || j < 0 || i >= H || j >= W; }
+      P& operator--()
       {
         --i, --j;
         return *this;
@@ -193,23 +198,34 @@ namespace kammyu
         --(*this);
         return p;
       }
+      void swap()
+      {
+        std::swap(i, j);
+      }
+      ll distEucSq() const { return i * i + j * j; }
+      ll distManh() const { return abs(i) + abs(j); }
     };
 
     using piP = std::pair<int, P>;
+    using pPP = std::pair<P, P>;
     using vP = std::vector<P>;
     using vpiP = std::vector<piP>;
+    using vpPP = std::vector<pPP>;
     using vvP = std::vector<std::vector<P>>;
     using vvpiP = std::vector<std::vector<piP>>;
     const vP around4({P(0, 1), P(1, 0), P(0, -1), P(-1, 0)});
     const vP around8({P(0, 1), P(1, 1), P(1, 0), P(1, -1), P(0, -1), P(-1, -1), P(-1, 0), P(-1, 1)});
-  };
-};
+  }; // namespace point
+}; // namespace kammyu
 
 #endif // KAMMYU_POINT
+
 #ifndef KAMMYU_UTILS
 #define KAMMYU_UTILS
 
 #include <algorithm>
+#include <functional>
+#include <queue>
 #include <set>
 #include <string>
 #include <utility>
@@ -218,9 +234,12 @@ namespace kammyu
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define rep(i, n) for (int i = 0; i < (n); ++i)
-#define sign(f) (f == 0 ? 0 : (f > 0) * 2 - 1)
-#define chmax(m, val) m = max(m, val)
-#define chmin(m, val) m = min(m, val)
+#define repp(i, s, e) for (int i = (s); i < (e); ++i)
+#define reep(i, n) for (int i = 0; i <= (n); ++i)
+#define reepp(i, s, e) for (int i = (s); i <= (e); ++i)
+#define rrep(i, n) for (int i = (n - 1); i >= 0; --i)
+#define rrepp(i, s, e) for (int i = (e - 1); i >= s; --i)
+#define sign(f) (f == 0 ? 0 : ((f) > 0) * 2 - 1)
 
 #define pqueue priority_queue
 
@@ -229,14 +248,38 @@ namespace kammyu
 
   namespace utils
   {
+    template <typename T1, typename T2>
+    bool chmax(T1& m, const T2& val)
+    {
+      if (m < val)
+      {
+        m = val;
+        return true;
+      }
+      return false;
+    }
+    template <typename T1, typename T2>
+    bool chmin(T1& m, const T2& val)
+    {
+      if (m > val)
+      {
+        m = val;
+        return true;
+      }
+      return false;
+    }
+
     using ll = long long;
     using pii = std::pair<int, int>;
     using piii = std::pair<int, pii>;
     using si = std::set<int>;
     using vi = std::vector<int>;
     using vpii = std::vector<pii>;
+    using vpiii = std::vector<piii>;
     using vvi = std::vector<std::vector<int>>;
     using vvpii = std::vector<std::vector<pii>>;
+    using vvvi = std::vector<vvi>;
+    using vvvvi = std::vector<vvvi>;
 
     using vb = std::vector<bool>;
     using vvb = std::vector<vb>;
@@ -251,12 +294,19 @@ namespace kammyu
     using vpll = std::vector<pll>;
     using vvl = std::vector<std::vector<ll>>;
     using vvpll = std::vector<std::vector<pll>>;
+    using vvvl = std::vector<vvl>;
+    using vvvvl = std::vector<vvvl>;
 
     using vsi = std::vector<std::set<int>>;
 
     using vs = std::vector<std::string>;
     template <typename T>
     using vv = std::vector<std::vector<T>>;
+
+    template <typename T>
+    using min_pqueue = std::priority_queue<T, std::vector<T>, std::greater<T>>;
+    template <typename T>
+    using max_pqueue = std::priority_queue<T>;
 
     template <typename T1, typename T2>
     std::pair<T1, T2> operator+(const std::pair<T1, T2>& a, const std::pair<T1, T2>& b)
@@ -281,10 +331,39 @@ namespace kammyu
       rep(i, s.size()) res[i] = s[i] - first_char;
       return res;
     }
+
+    template <typename T>
+    T sum(const std::vector<T>& vec)
+    {
+      T res = T();
+      for (const T& val : vec)
+        res = res + val;
+      return res;
+    }
+    template <typename T>
+    T min(const std::vector<T>& vec, T init)
+    {
+      T res = init;
+      for (const T& val : vec)
+        if (val < res)
+          res = val;
+      return res;
+    }
+    template <typename T>
+    T max(const std::vector<T>& vec, T init)
+    {
+      T res = init;
+      for (const T& val : vec)
+        if (val > res)
+          res = val;
+      return res;
+    }
+
   }; // namespace utils
 }; // namespace kammyu
 
 #endif // KAMMYU_UTILS
+
 
 using namespace kammyu::utils;
 using namespace kammyu::input;
@@ -318,159 +397,197 @@ void MAIN()
 
 // using namespace kammyu::infinities;
 // using namespace kammyu::modulos;
+
+#ifndef KAMMYU_SEGTREE
+#define KAMMYU_SEGTREE
+
+#include <algorithm>
+#include <limits>
+
+#include <atcoder/segtree>
+
+namespace kammyu
+{
+  namespace e
+  {
+    template <typename T>
+    T zero()
+    {
+      return 0;
+    }
+    template <typename T>
+    T one()
+    {
+      return 1;
+    }
+    template <typename T>
+    T type_max()
+    {
+      return std::numeric_limits<T>::max();
+    }
+    template <typename T>
+    T type_min()
+    {
+      return std::numeric_limits<T>::min();
+    }
+
+  } // namespace e
+  namespace op
+  {
+    template <typename T>
+    T add(T a, T b)
+    {
+      return a + b;
+    }
+    template <typename T>
+    T min(T a, T b)
+    {
+      return std::min(a, b);
+    }
+    template <typename T>
+    T max(T a, T b)
+    {
+      return std::max(a, b);
+    }
+  } // namespace op
+  namespace comp
+  {
+    template <typename T>
+    bool min(T a, T b)
+    {
+      return a > b;
+    }
+    template <typename T>
+    bool max(T a, T b)
+    {
+      return a < b;
+    }
+  } // namespace comp
+  namespace segtree
+  {
+    template <typename T>
+    struct node
+    {
+      T val;
+      int pos;
+    };
+
+    //* op(a, b) -> false: a, true: b
+    template <typename T, bool (*_op)(T, T), T (*_e)()>
+    struct nodeSeg
+    {
+    private:
+      using node = node<T>;
+      static node op(node a, node b)
+      {
+        if (_op(a.val, b.val))
+          return b;
+        return a;
+      }
+      static node e() { return {.val = _e(), .pos = -1}; }
+
+      atcoder::segtree<node, op, e> seg;
+
+    public:
+      nodeSeg() = default;
+      nodeSeg(int n) : seg(n) {}
+      template <typename S>
+      nodeSeg(const std::vector<S>& v)
+      {
+        std::vector<node> vec(v.size());
+        for (int i = 0; i < v.size(); i++)
+          vec[i] = {.val = v[i], .pos = i};
+        seg = atcoder::segtree<node, op, e>(vec);
+      }
+
+      void set(int p, T x) { seg.set(p, node{.val = x, .pos = p}); }
+      node get(int p) { return seg.get(p); }
+      node prod(int l, int r) { return seg.prod(l, r); }
+    };
+
+    template <typename T = long long>
+    using minSeg = nodeSeg<T, comp::min<T>, e::type_max<T>>;
+    template <typename T = long long>
+    using maxSeg = nodeSeg<T, comp::max<T>, e::type_min<T>>;
+
+    //* max, min, sum
+    template <typename T = long long>
+    struct utilSeg
+    {
+    private:
+      using node = node<T>;
+      struct S
+      {
+        node min, max;
+        T sum;
+      };
+      static S op(S a, S b)
+      {
+        if (a.min.val > b.min.val)
+          a.min = b.min;
+        if (a.max.val < b.max.val)
+          a.max = b.max;
+        a.sum += b.sum;
+        return a;
+      }
+      static S e() { return {.min = {.val = e::type_max<T>(), .pos = 1},
+                             .max = {.val = e::type_min<T>(), .pos = 1},
+                             .sum = 0}; }
+      atcoder::segtree<S, op, e> seg;
+
+    public:
+      utilSeg() = default;
+      utilSeg(int n) : seg(n) {}
+      template <typename U>
+      utilSeg(const std::vector<U>& v)
+      {
+        std::vector<S> vec(v.size());
+        for (int i = 0; i < v.size(); i++)
+          vec[i] = {.min = {.val = v[i], .pos = i},
+                    .max = {.val = v[i], .pos = i},
+                    .sum = v[i]};
+        seg = atcoder::segtree<S, op, e>(vec);
+      }
+
+      void set(int p, T x) { seg.set(p, {.min = {.val = x, .pos = p},
+                                         .max = {.val = x, .pos = p},
+                                         .sum = x}); }
+      S get(int p) { return seg.get(p); }
+      S prod(int l, int r) { return seg.prod(l, r); }
+    };
+  } // namespace segtree
+}; // namespace kammyu
+
+#endif // KAMMYU_SEGTREE
+
+using namespace kammyu::segtree;
+
 void precalc()
 {
   return;
 }
 
-#ifndef KAMMYU_AHO_CORASIC
-#define KAMMYU_AHO_CORASIC
-
-#include <functional>
-#include <queue>
-#include <vector>
-
-namespace kammyu
-{
-  namespace aho_corasic
-  {
-    constexpr int AHO_SIZE = 26;
-    struct AhoCorasic
-    {
-    private:
-      struct Node
-      {
-      private:
-        int val = -1;
-
-        Node* get(std::vector<int>::const_iterator left, std::vector<int>::const_iterator right)
-        {
-          Node* curr = this;
-          while (left != right)
-          {
-            curr = curr->get(*left);
-            left++;
-          }
-          return curr;
-        }
-
-      public:
-        std::vector<Node*> children;
-        Node* parent;
-        Node* failure;
-        Node* next;
-        int label = -1;
-
-        Node() : parent(nullptr), failure(nullptr), children(AHO_SIZE, nullptr) {}
-        Node(Node* par, int v) : val(v), parent(par), children(AHO_SIZE, nullptr), failure(nullptr) {}
-
-        Node* get(int c)
-        {
-          if (children[c] == nullptr)
-            children[c] = new Node(this, c);
-          return children[c];
-        }
-        Node* get(const std::vector<int>& s)
-        {
-          return get(s.begin(), s.end());
-        }
-        bool has_child(int c) { return children[c] != nullptr; }
-      };
-      Node root;
-      int size = 0;
-
-    public:
-      AhoCorasic() : root() {}
-      void insert(const std::vector<int>& s) { root.get(s)->label = size++; }
-
-      void build()
-      {
-        std::queue<Node*> que;
-        que.push(&root);
-        root.failure = &root;
-        root.next = &root;
-
-        while (!que.empty())
-        {
-          Node* q = que.front();
-          que.pop();
-          for (int c = 0; c < AHO_SIZE; c++)
-          {
-            if (q->has_child(c))
-            {
-              Node* node = q->failure;
-              if (q == &root)
-                q->children[c]->failure = &root;
-              else
-              {
-                while (node != &root && !node->has_child(c))
-                  node = node->failure;
-                q->children[c]->failure = node->has_child(c) ? node->children[c] : &root;
-              }
-              q->children[c]->next = q->children[c]->failure;
-              if (q->children[c]->next->label == -1 && q->children[c]->next != &root)
-                q->children[c]->next = q->children[c]->next->next;
-              que.push(q->children[c]);
-            }
-          }
-        }
-      }
-
-      Node* next(Node* from, int val, void (*find)(int))
-      {
-        while (from != &root && !from->has_child(val))
-          from = from->failure;
-        if (from->has_child(val))
-          from = from->children[val];
-
-        Node* temp = from;
-        do
-          if (temp->label != -1)
-            find(temp->label);
-        while ((temp = temp->next) != &root);
-        return from;
-      }
-
-      Node* get_root() { return &root; }
-    };
-  }; // namespace aho_corasic
-}; // namespace kammyu
-
-#endif // KAMMYU_AHO_CORASIC
-
-bool f = false;
-void find(int label)
-{
-  f = true;
-}
 void solve()
 {
-  string S;
-  int N;
-  cin >> S >> N;
-  vs T(N);
-  cin >> T;
+  int N, M;
+  cin >> N >> M;
+  vi P(N);
+  cin >> P;
+  utilSeg seg(P);
 
-  kammyu::aho_corasic::AhoCorasic ac;
-  for (string& t : T)
-    ac.insert(str2vi(t));
-  ac.build();
-
-  auto front = ac.get_root();
-
-  int ans = 0;
-  for (char c : S)
+  while (M--)
   {
-    f = false;
-    front = ac.next(front, c - 'a', find);
-    if (f)
-    {
-      ans++;
-      front = ac.get_root();
-    }
+    int l, r;
+    cin >> l >> r;
+    l--;
+    auto res = seg.prod(l, r);
+    int a = res.min.pos, b = res.max.pos;
+    swap(P[a], P[b]);
+    seg.set(a, P[a]);
+    seg.set(b, P[b]);
   }
-
-  cout << ans << endl;
+  cout << P << endl;
 
   return;
 }
+

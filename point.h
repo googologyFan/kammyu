@@ -53,7 +53,7 @@ namespace kammyu
         std::swap(i, j);
       }
       ll distEucSq() const { return i * i + j * j; }
-      ll distManh() const { return i + j; }
+      ll distManh() const { return abs(i) + abs(j); }
     };
 
     using piP = std::pair<int, P>;
