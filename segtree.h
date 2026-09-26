@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <numeric>
 
 #include <atcoder/segtree>
 
@@ -48,6 +49,25 @@ namespace kammyu
     T max(T a, T b)
     {
       return std::max(a, b);
+    }
+    template <typename T>
+    T gcd(T a, T b)
+    {
+      if (a == 0)
+        return b;
+      if (b == 0)
+        return a;
+      return std::gcd(a, b);
+    }
+    template <typename T>
+    T lcm(T a, T b)
+    {
+      return std::lcm(a, b);
+    }
+    template <typename T>
+    T xor_(T a, T b)
+    {
+      return a ^ b;
     }
   } // namespace op
   namespace comp
@@ -155,6 +175,13 @@ namespace kammyu
       S get(int p) { return seg.get(p); }
       S prod(int l, int r) { return seg.prod(l, r); }
     };
+
+    template <typename T = long long>
+    using gcdSeg = atcoder::segtree<T, op::gcd<T>, e::zero<T>>;
+    template <typename T = long long>
+    using lcmSeg = atcoder::segtree<T, op::lcm<T>, e::zero<T>>;
+    template <typename T = long long>
+    using xorSeg = atcoder::segtree<T, op::xor_<T>, e::zero<T>>;
   } // namespace segtree
 }; // namespace kammyu
 

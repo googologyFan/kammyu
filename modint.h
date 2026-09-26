@@ -61,6 +61,13 @@ namespace kammyu
         os << x << '\n';
       return os;
     }
+    template <int m>
+    std::ostream& operator<<(std::ostream& os, const std::vector<std::vector<std::vector<atcoder::static_modint<m>>>>& v)
+    {
+      for (const auto& x : v)
+        os << x << '\n';
+      return os;
+    }
   } // namespace output
 } // namespace kammyu
 

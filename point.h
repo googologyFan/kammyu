@@ -54,6 +54,14 @@ namespace kammyu
       }
       ll distEucSq() const { return i * i + j * j; }
       ll distManh() const { return abs(i) + abs(j); }
+
+      P rot45L() const { return P(i - j, i + j); }
+      P rot45R() const { return P(-(i + j), i - j); }
+
+      // bool argcomp(const P& o) const
+      // {
+      //   ;
+      // }
     };
 
     using piP = std::pair<int, P>;
